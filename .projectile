@@ -1,0 +1,7 @@
+-/log
+-/tmp
+-/vendor
+-/public/uploads
+-/_build
+-/deps
+-/node_modules
