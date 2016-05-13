@@ -17,7 +17,7 @@ defmodule Rumbl.VideoControllerTest do
     end
 
     if video_title = config[:with_video] do
-      video = insert_video(opts[:user], title: video_title)
+      video = insert_video(opts[:user], %{title: video_title})
       opts  = Map.merge(opts, %{video: video})
     end
 
@@ -86,12 +86,16 @@ defmodule Rumbl.VideoControllerTest do
   test "updates the user's video and redirects", %{conn: conn, user: _user, video: video} do
     conn = put conn, video_path(conn, :update, video), video: @valid_attrs
 
-    assert redirected_to(conn) == video_path(conn, :show, video)
+    # Reload the video's attributes
+    video         = Repo.get(Video, video.id)
+    expected_path = video_path(conn, :show, video)
+
+    assert redirected_to(conn) == expected_path
     assert String.contains?(conn.resp_body, @valid_attrs[:title])
   end
 
   @tag login_as: "max", with_video: "giant robots"
-  test "deletes the user's video and redirects", %{conn: conn, user: user, video: video} do
+  test "deletes the user's video and redirects", %{conn: conn, user: _user, video: video} do
     count_before = video_count(Video)
     conn         = delete conn, video_path(conn, :delete, video)
 
