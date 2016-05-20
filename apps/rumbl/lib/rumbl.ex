@@ -9,8 +9,6 @@ defmodule Rumbl do
     children = [
       # Start the endpoint when the application starts
       supervisor(Rumbl.Endpoint, []),
-      # Start the InfoSys supervisor
-      supervisor(Rumbl.InfoSys.Supervisor, []),
       # Start the Ecto repository
       supervisor(Rumbl.Repo, []),
       # Here you could define other workers and supervisors as children
